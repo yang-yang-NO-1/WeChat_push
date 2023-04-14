@@ -1,3 +1,4 @@
-requests
-wechatpy
+requests~=2.28.2
+wechatpy~=1.8.18
 cryptography
+zhdate~=0.1

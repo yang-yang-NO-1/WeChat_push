@@ -4,8 +4,10 @@ import math
 from wechatpy import WeChatClient
 from wechatpy.client.api import WeChatMessage, WeChatTemplate
 import requests
+import sys
 import os
 import random
+from zhdate import ZhDate
 
 ############### 参数设定区域 #################
 # 微信测试号信息
@@ -21,12 +23,12 @@ user_id = ' '
 # 天行数据
 key = ' '
 # 心知天气
-zxkey = ' '
+zxkey = ' -xsa'
 # 高德key
 gdkey = ' '
 
 # 生日日期参数填写
-birthday = '1-24'  # 格式 %month-%day 【用月份-日期格式填写，不要出现年份】
+birthday = 'r-2-25'  # 格式 %month-%day 【用r-月份-日期格式填写，不要出现年份,r代表农历，其他字母代表公历】
 # 相处开始日期
 start_date = '2023-1-11'  # 使用年份-月份-日期的形式填写
 
@@ -40,7 +42,10 @@ today = datetime.now()
 # 当前日期获取
 currentTime = time.strftime("%Y-%m-%d", time.localtime(time.time()))
 nowDate = time.strftime("%H:%M:%S", time.localtime(time.time()))
-
+year = time.localtime().tm_year
+month = time.localtime().tm_mon
+day = time.localtime().tm_mday
+today1 = datetime.date(datetime(year=year, month=month, day=day))
 
 # 相处日期
 #### 逻辑：从现在时间-相识时间得出时间长！
@@ -51,12 +56,51 @@ def get_count():
 
 ### 逻辑: 判断生日是否已经过了，过了的话下一年的时间长计算，没过则用现在的月份日期-生日的月份日期
 # 生日日期计算
-def get_birthday():
-    next = datetime.strptime(str(date.today().year) + "-" + birthday, "%Y-%m-%d")
-    if next < datetime.now():
-        next = next.replace(year=next.year + 1)
-    return (next - today).days
+# def get_birthday():
+#     next = datetime.strptime(str(date.today().year) + "-" + birthday, "%Y-%m-%d")
+#     if next < datetime.now():
+#         next = next.replace(year=next.year + 1)
+#     return (next - today).days
 
+def get_birthday(birthday, year, today):
+    birthday_year = birthday.split("-")[0]
+    # 判断是否为农历生日(格式为r-2023-12-1)
+    if birthday_year[0] == "r":
+        r_mouth = int(birthday.split("-")[1])
+        r_day = int(birthday.split("-")[2])
+        # 获取农历生日的今年对应的月和日
+        try:
+            birthday = ZhDate(year, r_mouth, r_day).to_datetime().date()
+        except TypeError:
+            print("请检查生日的日子是否在今年存在")
+            os.system("pause")
+            sys.exit(1)
+        birthday_month = birthday.month
+        birthday_day = birthday.day
+        # 今年生日
+        year_date = date(year, birthday_month, birthday_day)
+
+    else:
+        # 获取国历生日的今年对应月和日
+        birthday_month = int(birthday.split("-")[1])
+        birthday_day = int(birthday.split("-")[2])
+        # 今年生日
+        year_date = date(year, birthday_month, birthday_day)
+    # 计算生日年份，如果还没过，按当年减，如果过了需要+1
+    if today1 > year_date:
+        if birthday_year[0] == "r":
+            # 获取农历明年生日的月和日
+            r_last_birthday = ZhDate((year + 1), r_mouth, r_day).to_datetime().date()
+            birth_date = date((year + 1), r_last_birthday.month, r_last_birthday.day)
+        else:
+            birth_date = date((year + 1), birthday_month, birthday_day)
+        birth_day = str(birth_date.__sub__(today1)).split(" ")[0]
+    elif today1 == year_date:
+        birth_day = 0
+    else:
+        birth_date = year_date
+        birth_day = str(birth_date.__sub__(today1)).split(" ")[0]
+    return birth_day
 
 # 当前日期获取处理
 def getweek():
@@ -354,7 +398,7 @@ if "06:00:00" < nowDate < "22:00:00":
         "caihongpi": {"value": getcaihongpi, "color": get_random_color()},
         "saying": {"value": geteverydayEnglish['note'], "color": get_random_color()},
         "source": {"value": geteverydayEnglish['content'], "color": get_random_color()},
-        "get_birthday": {"value": get_birthday(), "color": get_random_color()},
+        "get_birthday": {"value": get_birthday(birthday, year, today1), "color": get_random_color()},
         "meeting": {"value": get_count(), "color": get_random_color()}, \
         }
 # if "14:00:00" < nowDate < "18:00:00":
