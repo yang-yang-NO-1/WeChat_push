@@ -9,21 +9,21 @@ import random
 
 ############### 参数设定区域 #################
 # 微信测试号信息
-appID = 'wx972afd59bb63ccad'
-appsecret = '53c44d59c8e66cb8cc1ade2a05b0b41c'
+appID = ' '
+appsecret = ' '
 # 模板消息接口id
-template1 = '0aHGvhHcPIGxXx_6l2rV_1tPRJcHlCNNtZn6faKjUT0'  # 自定义模板一的模板消息接口id号
-template2 = '3O07o4_dXk2xkXgiuo247wEQimt096JAypfr0fXc8ts'  # 自定义模板二的模板消息接口id号，不启用不用填写
+template1 = ' '  # 自定义模板一的模板消息接口id号
+template2 = ' '  # 自定义模板二的模板消息接口id号，不启用不用填写
 template3 = ''  # 自定义模板三的模板消息接口id号，不启用不用填写
 template4 = ''  # 自定义模板四的模板消息接口id号，不启用不用填写
 # 关注的成员ID，测试号页面的微信号，实则为账户的openID
-user_id = 'oMU_a586gPGXtfrzDPrzMtfXfoz0'
+user_id = ' '
 # 天行数据
-key = '0bfabef08410248adfdd80e2b20a772d'
+key = ' '
 # 心知天气
-zxkey = 'SrgVCmfNjwKgd-xsa'
+zxkey = ' '
 # 高德key
-gdkey = '410ac6f22f04c7c8279942c9bf183c90'
+gdkey = ' '
 
 # 生日日期参数填写
 birthday = '1-24'  # 格式 %month-%day 【用月份-日期格式填写，不要出现年份】
