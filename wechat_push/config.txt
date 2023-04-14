@@ -1,0 +1,33 @@
+{
+# 公众号配置
+# 公众号appId
+"app_id": "wx395a7ba11d161260",
+# 公众号appSecret
+"app_secret": "e946f39326e77b2547a80f2103e8003e",
+# 模板消息id
+"template_id": "yii6S28Mw-CIuE_2lxhhNY0Z4Cn-51iha1kb-fIFhVA",
+# 接收公众号消息的微信号，如果有多个，需要在[]里用英文逗号间隔，例如["wx1", "wx2"]
+"user": ["odcfd6qkAntiI2WySR5y7f1sTblk",  #nian
+"odcfd6krcY73QfTADwCKWK6zQFJ0", # tang
+"odcfd6n839jbpmP7xaCrJGHizYpo",  # jing
+],
+ 
+# 信息配置
+# 和风天气apikey
+# https://id.qweather.com/#/homepage
+"weather_key": "443550684f04496294a3d00a0f606c37",
+# 所在地区，可为省，城市，区，县，同时支持国外城市，例如伦敦
+# 后续如果可以，改成推送该城市下的所有区，如果要获取用户的位置信息，需要用户二次确认，拉到
+"region": "浦东新区",
+# 生日1，修改名字为对应需要显示的名字，如果生日为农历，在最前面加上r即可
+#"birthday1": {"name": "##", "birthday": "2001-01-01"},
+# 生日2
+#"birthday2": {"name": "##", "birthday": "2001-01-01"},
+# 在一起的日子，格式同上，暂不不支持农历
+"love_date": "2022-01-01",
+# 金句中文，如果设置了，则会显示这里的，如果为空，默认会读取金山的每日金句
+# 今天外边雨滴滴答答的声音，就像是幻想看见你的每一个瞬间，秒针在我心中撞击那样的铿锵有力。
+"note_ch": "",
+# 金句英文
+"note_en": ""
+}
