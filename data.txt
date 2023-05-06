@@ -15,3 +15,22 @@
 
 特殊而又重要的日子：
 距离你的生日还有 {{get_birthday.DATA}} 天 我们已经认识了 {{meeting.DATA}} 天
+
+# 新格式
+*{{getSayLove1.DATA}}{{getSayLove2.DATA}}{{getSayLove3.DATA}}
+
+今日是: {{currentTime.DATA}}, 农历: {{nongli.DATA}}, {{week.DATA}}
+今天天气: {{dayweather.DATA}}转{{nightweather.DATA}}, {{winddirection.DATA}}风, 风速: {{windpower.DATA}}
+现在天气: {{weather.DATA}}
+最高气温: {{daytemp.DATA}} ℃
+最低气温: {{nighttemp.DATA}} ℃
+当前温度: {{temperature.DATA}}
+空气质量: {{suggestion.DATA}}
+
+*{{caihongpi1.DATA}}{{caihongpi2.DATA}}{{caihongpi3.DATA}}
+每日一言：
+*{{saying1.DATA}}{{saying2.DATA}}{{saying3.DATA}}
+*{{source1.DATA}}{{source2.DATA}}{{source3.DATA}}
+
+特殊而又重要的日子：
+距离你的生日还有 {{get_birthday.DATA}} 天 我们已经认识了 {{meeting.DATA}} 天

@@ -11,24 +11,24 @@ from zhdate import ZhDate
 
 ############### 参数设定区域 #################
 # 微信测试号信息
-appID = ' '
-appsecret = ' '
+appID = ''
+appsecret = ''
 # 模板消息接口id
-template1 = ' '  # 自定义模板一的模板消息接口id号
-template2 = ' '  # 自定义模板二的模板消息接口id号，不启用不用填写
+template1 = ''  # 自定义模板一的模板消息接口id号
+template2 = ''  # 自定义模板二的模板消息接口id号，不启用不用填写
 template3 = ''  # 自定义模板三的模板消息接口id号，不启用不用填写
 template4 = ''  # 自定义模板四的模板消息接口id号，不启用不用填写
 # 关注的成员ID，测试号页面的微信号，实则为账户的openID
-user_id = ' '
+user_id = ''
 # 天行数据
-key = ' '
+key = ''
 # 心知天气
-zxkey = ' -xsa'
+zxkey = ''
 # 高德key
-gdkey = ' '
+gdkey = ''
 
 # 生日日期参数填写
-birthday = 'r-2-25'  # 格式 %month-%day 【用r-月份-日期格式填写，不要出现年份,r代表农历，其他字母代表公历】
+birthday = 'l-1-24'  # 格式 %month-%day 【用r-月份-日期格式填写，不要出现年份,r代表农历，其他字母代表公历】
 # 相处开始日期
 start_date = '2023-1-11'  # 使用年份-月份-日期的形式填写
 
@@ -46,6 +46,27 @@ year = time.localtime().tm_year
 month = time.localtime().tm_mon
 day = time.localtime().tm_mday
 today1 = datetime.date(datetime(year=year, month=month, day=day))
+
+
+# 由于微信模板消息单个参数20字符限制，对请求数据分割
+#### 逻辑：中文直接取20个字符，英文需要对句子使用split，才能判断词数
+def zh_split(sentence):
+    if len(sentence) <= 20:
+        return sentence, '', ''
+    elif len(sentence) <= 40:
+        return sentence[0:19], sentence[19:], ''  # [0:19]表示索引包括0不包括19
+    else:
+        return sentence[0:19], sentence[19:39], sentence[39:]
+
+# 英文分割,截取19个词
+def en_split(sentence):
+    sentence = sentence.split()
+    if len(sentence) < 20:
+        return ' '.join(sentence), '', ''
+    elif len(sentence) < 38:
+        return ' '.join(sentence[0:18]), ' '.join(sentence[18:]), ''
+    else:
+        return ' '.join(sentence[0:18]), ' '.join(sentence[18:37]), ' '.join(sentence[37:])
 
 # 相处日期
 #### 逻辑：从现在时间-相识时间得出时间长！
@@ -101,6 +122,7 @@ def get_birthday(birthday, year, today):
         birth_date = year_date
         birth_day = str(birth_date.__sub__(today1)).split(" ")[0]
     return birth_day
+
 
 # 当前日期获取处理
 def getweek():
@@ -325,6 +347,7 @@ def gettianqishiju():
     else:
         print('请求失败')
 
+
 # 每日英语
 def geteverydayEnglish():
     url = 'http://apis.tianapi.com/everyday/index?key='
@@ -336,16 +359,19 @@ def geteverydayEnglish():
         print('请求失败')
 
 getSayLove = getSayLove()
+getSayLove1, getSayLove2, getSayLove3 = zh_split(getSayLove)
 getqingshi = getqingshi()
 getzaoan = getzaoan()
 getwanan = getwanan()
 getlzmy = getlzmy()
 getcaihongpi = getcaihongpi()
+getcaihongpi1, getcaihongpi2, getcaihongpi3 = zh_split(getcaihongpi)
 getjiejiari = getjiejiari()
 getone = getone()
 # gettianqishiju = gettianqishiju()
 geteverydayEnglish = geteverydayEnglish()
-
+saying1, saying2, saying3 = zh_split(geteverydayEnglish['note'])
+source1, source2, source3 = en_split(geteverydayEnglish['content'])
 ##### API调用部分结束 ###
 
 # 推送消息
@@ -382,7 +408,9 @@ wm = WeChatMessage(client)
 if "06:00:00" < nowDate < "22:00:00":
     template_id = template2
     data = {
-        "getSayLove": {"value": getSayLove, "color": get_random_color()},
+        "getSayLove1": {"value": getSayLove1, "color": get_random_color()},
+        "getSayLove2": {"value": getSayLove2, "color": get_random_color()},
+        "getSayLove3": {"value": getSayLove3, "color": get_random_color()},
         "currentTime": {"value": currentTime, "color": get_random_color()},
         "nongli": {"value": getjiejiari['lunarmonth'] + '-' + getjiejiari['lunarday'], "color": get_random_color()},
         "week": {"value": getweek(), "color": get_random_color()},
@@ -395,12 +423,18 @@ if "06:00:00" < nowDate < "22:00:00":
         "nighttemp": {"value": nighttemp, "color": get_random_color()},
         "temperature": {"value": temperature + '℃', "color": get_random_color()},
         "suggestion": {"value": suggestion, "color": suggestioncolor()},
-        "caihongpi": {"value": getcaihongpi, "color": get_random_color()},
-        "saying": {"value": geteverydayEnglish['note'], "color": get_random_color()},
-        "source": {"value": geteverydayEnglish['content'], "color": get_random_color()},
+        "caihongpi1": {"value": getcaihongpi1, "color": get_random_color()},
+        "caihongpi2": {"value": getcaihongpi2, "color": get_random_color()},
+        "caihongpi3": {"value": getcaihongpi3, "color": get_random_color()},
+        "saying1": {"value": saying1, "color": get_random_color()},
+        "saying2": {"value": saying2, "color": get_random_color()},
+        "saying3": {"value": saying3, "color": get_random_color()},
+        "source1": {"value": source1, "color": get_random_color()},
+        "source2": {"value": source2, "color": get_random_color()},
+        "source3": {"value": source3, "color": get_random_color()},
         "get_birthday": {"value": get_birthday(birthday, year, today1), "color": get_random_color()},
-        "meeting": {"value": get_count(), "color": get_random_color()}, \
-        }
+        "meeting": {"value": get_count(), "color": get_random_color()}
+    }
 # if "14:00:00" < nowDate < "18:00:00":
 #     template_id = template3
 #     data = {
@@ -424,9 +458,9 @@ if "06:00:00" < nowDate < "22:00:00":
 
 
 # 发送自定义参数集，请求微信api进行处理，改成模板形式进行请求
-resp = wm.send_template(user_id, template_id, data)
+resp = wm.send_template(user_id, template_id, data, 'https://yang-yang-no-1.github.io/')
 print(resp)
-
+print(data)
 ######## 下方是可获取api信息的显示，如有需要可以打开进行查看 #######
 
 print("当前时间：", currentTime, '-', nowDate, '-', getweek())
@@ -439,4 +473,5 @@ print('励志名言', getlzmy['saying'], '-', getlzmy['source'], '-', getlzmy['t
 print('彩虹屁', getcaihongpi)
 print('节假日', getjiejiari['lunarmonth'], '-', getjiejiari['lunarday'], getjiejiari['info'])
 print('one', getone)
+print('每日英语', geteverydayEnglish)
 # print(weather, '-', gettianqishiju['source'], '-', gettianqishiju['author'], '-', gettianqishiju['content'])

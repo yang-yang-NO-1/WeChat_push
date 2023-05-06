@@ -1,5 +1,14 @@
 # 微信模板消息在data.txt中，添加支持农历生日，部署至树莓派上
+接口api：
+```
+https://www.jisuapi.com/my/api
+https://www.tianapi.com/console/
+```
+2023.5.4开始自定义颜色失效啦,变量最大支持20字符
+https://mp.weixin.qq.com/s/hvLO4Vs75NXDA__SxuyKXw
+![](README/20230506111425.png)
 # 微信测试号每日消息推送
+
 
 > 本项目基本功能使用了Python的wechatpy,requests第三方库,以及内置的python库进行实现例如: time , random模块进行实现，欢迎大家进行使用体验
 
